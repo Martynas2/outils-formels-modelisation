@@ -2,19 +2,37 @@ extension PredicateNet {
 
     /// Returns the marking graph of a bounded predicate net.
     public func markingGraph(from marking: MarkingType) -> PredicateMarkingNode<T>? {
-        // Write your code here ...
-
-        // Note that I created the two static methods `equals(_:_:)` and `greater(_:_:)` to help
-        // you compare predicate markings. You can use them as the following:
-        //
-        //     PredicateNet.equals(someMarking, someOtherMarking)
-        //     PredicateNet.greater(someMarking, someOtherMarking)
-        //
-        // You may use these methods to check if you've already visited a marking, or if the model
-        // is unbounded.
-
-        return nil
-    }
+        let first = PredicateMarkingNode<T>(marking: marking)
+        var ToSee: [PredicateMarkingNode<T>] = [first]
+        // While there is nodes to see
+        while(!ToSee.isEmpty){
+          let cur = ToSee.popLast()!
+          for tran in transitions {
+            cur.successors[tran] = [:]
+            // Start bindings
+            let binding: [PredicateTransition<T>.Binding] = tran.fireableBingings(from: cur.marking)
+            // Browse bindings
+            for bind in binding{
+              let second = PredicateMarkingNode(marking: tran.fire(from: cur.marking, with:bind)!)
+              // For unbounded graphs
+              for y in first{
+                if (PredicateNet.greater(second.marking, y.marking)){
+                return nil
+                }
+              }
+              // If node already seen
+              if let seen = first.first(where:{PredicateNet.equals($0.marking, second.marking)}){
+                cur.successors[tran]![bind] = seen
+              }
+              else if(!ToSee.contains(where: { PredicateNet.equals($0.marking, second.marking) })) {
+                ToSee.append(second)
+                cur.successors[tran]![bind] = second
+              }
+            }
+          }
+        }
+        return first
+      }
 
     // MARK: Internals
 
