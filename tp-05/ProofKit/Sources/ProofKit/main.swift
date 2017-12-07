@@ -1,5 +1,49 @@
 import ProofKitLib
 
+
+print("ex-09")
+//Seance exercices 9
+do{
+  let a: Formula = "a"
+  let b: Formula = "b"
+  let c: Formula = "c"
+
+  let f = !(a && (b || c))
+  print("\n")
+  print("2.1")
+  print("Formule: \(f)")
+  print("NNF:     \(f.nnf)")
+  print("CNF:     \(f.cnf)")
+  print("DNF:     \(f.dnf)")
+  print("\n")
+}
+do{
+  let a: Formula = "a"
+  let b: Formula = "b"
+  let c: Formula = "c"
+
+  let f = (a => b) || !(a && c)
+  print("2.2")
+  print("Formule: \(f)")
+  print("NNF:     \(f.nnf)")
+  print("CNF:     \(f.cnf)")
+  print("DNF:     \(f.dnf)")
+  print("\n")
+}
+do{
+  let a: Formula = "a"
+  let b: Formula = "b"
+  let c: Formula = "c"
+
+let f = (!a || b && c) && a
+  print("2.3")
+  print("Formule: \(f)")
+  print("NNF:     \(f.nnf)")
+  print("CNF:     \(f.cnf)")
+  print("DNF:     \(f.dnf)")
+  print("\n")
+}
+
 let a: Formula = "a"
 let b: Formula = "b"
 let f = a && b
@@ -50,3 +94,4 @@ let fruityEvaluation = f.eval { (proposition) -> Fruit in
     }
 }
 print(fruityEvaluation)
+
